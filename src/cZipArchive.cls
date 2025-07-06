@@ -1379,6 +1379,10 @@ Public Function OpenArchive(ArchiveFile As Variant) As Boolean
                     uEndHdr.Ext.CenOff = uEndHdr.Ext.CenOff * 10000@
                     uEndHdr.Ext.Entries = uEndHdr.Ext.Entries * 10000@
                 Else
+                    If cOffset - uEndHdr.CenSize <> uEndHdr.CenOff Then
+                        '--- invalid offset vs size of central directory -> sequential lookup
+                        Exit For
+                    End If
                     uEndHdr.Ext.CenOff = pvToInt64(uEndHdr.CenOff)
                     uEndHdr.Ext.Entries = uEndHdr.Entries And &HFFFF&
                 End If
